@@ -6,7 +6,9 @@
 
 class FileOpenException : public std::exception
 {
+  std::string message;
+
 public:
-  FileOpenException(std::string);
+  FileOpenException(const std::string &);
   const char *what() const noexcept override;
 };
