@@ -2,7 +2,11 @@
 
 #include <unordered_map>
 #include <string>
+#include <filesystem>
+
 #include "FileReader.hpp"
+
+namespace fs = std::filesystem;
 
 class MathInterpreter
 {
@@ -10,6 +14,6 @@ class MathInterpreter
   FileReader reader;
 
 public:
-  MathInterpreter() = default;
-  double interpret(const std::string &);
+  MathInterpreter(const char *);
+  double interpret();
 };

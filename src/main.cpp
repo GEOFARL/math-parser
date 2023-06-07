@@ -1,8 +1,7 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 
-#include "FileReader.hpp"
+#include "MathInterpreter.hpp"
 
 namespace fs = std::filesystem;
 
@@ -15,13 +14,10 @@ int main(int argc, char *argv[])
     cerr << "Usage: " << argv[0] << " <filepath>" << endl;
     return 1;
   }
-  string filename(argv[1]);
-  fs::path path{filename};
   try
   {
-    FileReader reader{path};
-    string content = reader.readFile();
-    cout << content;
+    MathInterpreter interpreter{argv[1]};
+    cout << "result: " << interpreter.interpret();
   }
   catch (const exception &e)
   {
