@@ -10,7 +10,9 @@ std::string FileReader::readFile()
   if (!infile)
   {
     // TO DO: Custom exception
-    throw std::runtime_error("Error opening " + std::string(filepath.c_str()));
+    std::string error_message{"Error opening " + std::string(filepath.filename().c_str()) + "\n"};
+    error_message += "File path " + std::string((fs::current_path() /= filepath).c_str()) + " does not exist";
+    throw std::runtime_error(error_message);
   }
 
   std::string fileContent{};
