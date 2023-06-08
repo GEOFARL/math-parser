@@ -53,6 +53,8 @@ namespace Tokenization
 
     Token getNextToken();
 
+    static std::string getTokenTypeString(TokenType tokenType);
+
   private:
     bool hasMoreTokens();
     std::string match(const std::regex &, const std::string &);

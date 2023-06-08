@@ -64,4 +64,33 @@ namespace Tokenization
 
     throw UnexpectedTokenException(std::string("Unexpected token: \"" + std::string(1, inputSlice[0]) + "\""));
   }
+
+  std::string Tokenizer::getTokenTypeString(TokenType tokenType)
+  {
+    switch (tokenType)
+    {
+    case TokenType::NUMBER:
+      return "NUMBER";
+    case TokenType::IDENTIFIER:
+      return "IDENTIFIER";
+    case TokenType::ADDITION:
+      return "ADDITION";
+    case TokenType::SUBTRACTION:
+      return "SUBTRACTION";
+    case TokenType::MULTIPLICATION:
+      return "MULTIPLICATION";
+    case TokenType::DIVISION:
+      return "DIVISION";
+    case TokenType::EXPONENTIATION:
+      return "EXPONENTIATION";
+    case TokenType::PARENTHESIS_LEFT:
+      return "PARENTHESIS_LEFT";
+    case TokenType::PARENTHESIS_RIGHT:
+      return "PARENTHESIS_RIGHT";
+    case TokenType::EMPTY:
+      return "EMPTY";
+    default:
+      return "";
+    }
+  }
 }

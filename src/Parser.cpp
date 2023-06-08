@@ -37,13 +37,13 @@ Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
   if (token.type == Tokenization::TokenType::EMPTY)
   {
     // add custom exception
-    throw std::runtime_error("Unexpected end of input");
+    throw std::runtime_error("Unexpected end of input, expected " + Tokenization::Tokenizer::getTokenTypeString(tokenType));
   }
 
   if (token.type != tokenType)
   {
     // add custom exception
-    throw std::runtime_error("Unexpected token: " + token.value);
+    throw std::runtime_error("Unexpected token: " + token.value + ", expected " + Tokenization::Tokenizer::getTokenTypeString(tokenType));
   }
 
   lookahead = tokenizer.getNextToken();
