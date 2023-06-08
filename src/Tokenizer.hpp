@@ -16,6 +16,12 @@ enum class TokenType
   PARENTHESIS_RIGHT
 };
 
+struct Token
+{
+  TokenType type;
+  std::string value;
+};
+
 class Tokenizer
 {
 };
