@@ -13,17 +13,26 @@ double Parser::parse()
 
 /*
 Expression
-    = Primary ("+" Primary)*
+    = Primary (("+" / "-") Primary)*
 */
 double Parser::handleExpression()
 {
   double left = handlePrimary();
 
-  while (lookahead.type == Tokenization::TokenType::ADDITION)
+  while (lookahead.type == Tokenization::TokenType::ADDITION || lookahead.type == Tokenization::TokenType::SUBTRACTION)
   {
-    eat(Tokenization::TokenType::ADDITION);
-    double right = handlePrimary();
-    left += right;
+    if (lookahead.type == Tokenization::TokenType::ADDITION)
+    {
+      eat(Tokenization::TokenType::ADDITION);
+      double right = handlePrimary();
+      left += right;
+    }
+    else
+    {
+      eat(Tokenization::TokenType::SUBTRACTION);
+      double right = handlePrimary();
+      left -= right;
+    }
   }
   return left;
 }
