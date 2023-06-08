@@ -6,6 +6,8 @@
 #include <utility>
 #include <regex>
 
+#include "Exceptions.hpp"
+
 namespace Tokenization
 {
   enum class TokenType
