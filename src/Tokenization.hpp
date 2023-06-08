@@ -1,0 +1,35 @@
+#pragma once
+
+#include <vector>
+#include <string>
+#include <utility>
+#include <regex>
+
+namespace Tokenization
+{
+  enum class TokenType
+  {
+    EMPTY,
+    NUMBER,
+    IDENTIFIER,
+    ADDITION,
+    SUBTRACTION,
+    MULTIPLICATION,
+    DIVISION,
+    EXPONENTIATION,
+    PARENTHESIS_LEFT,
+    PARENTHESIS_RIGHT
+  };
+
+  struct Token
+  {
+    TokenType type;
+    std::string value;
+  };
+
+  extern const std::vector<std::pair<std::regex, TokenType>> TokenSpec;
+
+  class Tokenizer
+  {
+  };
+}
