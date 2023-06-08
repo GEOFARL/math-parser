@@ -18,6 +18,7 @@ public:
 private:
   double handleExpression();
   double handlePrimary();
+  double handleTerm();
 
   Tokenization::Token eat(Tokenization::TokenType);
 };

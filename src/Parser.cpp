@@ -13,27 +13,53 @@ double Parser::parse()
 
 /*
 Expression
-    = Primary (("+" / "-") Primary)*
+    = Term (("+" / "-") Term)*
 */
 double Parser::handleExpression()
 {
-  double left = handlePrimary();
+  double left = handleTerm();
 
   while (lookahead.type == Tokenization::TokenType::ADDITION || lookahead.type == Tokenization::TokenType::SUBTRACTION)
   {
     if (lookahead.type == Tokenization::TokenType::ADDITION)
     {
       eat(Tokenization::TokenType::ADDITION);
-      double right = handlePrimary();
+      double right = handleTerm();
       left += right;
     }
     else
     {
       eat(Tokenization::TokenType::SUBTRACTION);
-      double right = handlePrimary();
+      double right = handleTerm();
       left -= right;
     }
   }
+  return left;
+}
+
+/*
+Term
+    = Primary(("*" / "/") Primary)*
+*/
+double Parser::handleTerm()
+{
+  double left = handlePrimary();
+  while (lookahead.type == Tokenization::TokenType::MULTIPLICATION || lookahead.type == Tokenization::TokenType::DIVISION)
+  {
+    if (lookahead.type == Tokenization::TokenType::MULTIPLICATION)
+    {
+      eat(Tokenization::TokenType::MULTIPLICATION);
+      double right = handlePrimary();
+      left *= right;
+    }
+    else
+    {
+      eat(Tokenization::TokenType::DIVISION);
+      double right = handlePrimary();
+      left /= right;
+    }
+  }
+
   return left;
 }
 
