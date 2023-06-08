@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <utility>
@@ -27,6 +28,13 @@ namespace Tokenization
     std::string value;
 
     Token(TokenType type, const std::string &value) : type{type}, value{value} {}
+
+    // for testing purposes
+    friend std::ostream &operator<<(std::ostream &os, const Token &token)
+    {
+      os << "{ value: " << token.value << " }";
+      return os;
+    }
   };
 
   extern const std::vector<std::pair<std::regex, TokenType>> TokenSpec;

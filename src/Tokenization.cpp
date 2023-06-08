@@ -47,6 +47,22 @@ namespace Tokenization
     for (const auto &spec : TokenSpec)
     {
       const std::string tokenValue = match(spec.first, inputSlice);
+
+      if (tokenValue.empty())
+      {
+        continue;
+      }
+
+      TokenType type = spec.second;
+      if (type == TokenType::EMPTY)
+      {
+        return getNextToken();
+      }
+
+      return Token(type, tokenValue);
     }
+
+    // Add custom error for this
+    throw std::runtime_error("Unexpected token: \"" + std::string(1, inputSlice[0]) + "\"");
   }
 }
