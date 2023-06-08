@@ -1,16 +1,10 @@
-#pragma once
+#include "Parser.hpp"
 
-#include <string>
-#include "Tokenization.hpp"
-
-class Parser
+double Parser::parse(const std::string &inputString)
 {
-public:
-  Parser() = default;
+  std::string input{inputString};
+  Tokenization::Tokenizer tokenizer{inputString};
+  Tokenization::Token lookahead{tokenizer.getNextToken()};
 
-  double parse(const std::string &);
-
-private:
-  double handleExpression();
-  double handlePrimary();
-};
+  return handleExpression();
+}
