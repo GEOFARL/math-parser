@@ -5,12 +5,18 @@
 
 class Parser
 {
-public:
-  Parser() = default;
+  std::string input;
+  Tokenization::Tokenizer tokenizer;
+  Tokenization::Token lookahead;
 
-  double parse(const std::string &);
+public:
+  Parser(const std::string &);
+
+  double parse();
 
 private:
   double handleExpression();
   double handlePrimary();
+
+  Tokenization::Token eat(Tokenization::TokenType);
 };

@@ -40,7 +40,7 @@ namespace Tokenization
   {
     if (!hasMoreTokens())
     {
-      return Token(TokenType::EMPTY, "");
+      return Token();
     }
 
     std::string inputSlice = input.substr(cursor);

@@ -1,11 +1,13 @@
 #include "Parser.hpp"
 
-double Parser::parse(const std::string &inputString)
+Parser::Parser(const std::string &input)
+    : input{input}, tokenizer{input}
 {
-  std::string input{inputString};
-  Tokenization::Tokenizer tokenizer{inputString};
-  Tokenization::Token lookahead{tokenizer.getNextToken()};
+  lookahead = tokenizer.getNextToken();
+}
 
+double Parser::parse()
+{
   return handleExpression();
 }
 
@@ -24,6 +26,27 @@ Primary
 */
 double Parser::handlePrimary()
 {
-  Tokenization::Token token; // get token of a NUMBER type
+  Tokenization::Token token = eat(Tokenization::TokenType::NUMBER);
   return std::stod(token.value);
+}
+
+Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
+{
+  Tokenization::Token token = lookahead;
+
+  if (token.type == Tokenization::TokenType::EMPTY)
+  {
+    // add custom exception
+    throw std::runtime_error("Unexpected end of input");
+  }
+
+  if (token.type != tokenType)
+  {
+    // add custom exception
+    throw std::runtime_error("Unexpected token: " + token.value);
+  }
+
+  lookahead = tokenizer.getNextToken();
+
+  return token;
 }

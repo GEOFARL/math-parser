@@ -8,8 +8,7 @@ MathInterpreter::MathInterpreter(const char *filepath)
 double MathInterpreter::interpret()
 {
   std::string content = reader.readFile();
-  Tokenization::Tokenizer tokenizer(content);
-  std::cout << tokenizer.getNextToken() << std::endl;
-  std::cout << tokenizer.getNextToken() << std::endl;
+  Parser parser{content};
+  std::cout << parser.parse();
   return 0;
 }

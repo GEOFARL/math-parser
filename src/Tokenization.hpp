@@ -31,6 +31,8 @@ namespace Tokenization
 
     Token(TokenType type, const std::string &value) : type{type}, value{value} {}
 
+    Token() : type(TokenType::EMPTY), value("") {}
+
     // for testing purposes
     friend std::ostream &operator<<(std::ostream &os, const Token &token)
     {
