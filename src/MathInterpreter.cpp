@@ -9,6 +9,5 @@ double MathInterpreter::interpret()
 {
   std::string content = reader.readFile();
   Parser parser{content};
-  std::cout << parser.parse();
-  return 0;
+  return parser.parse();
 }

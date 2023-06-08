@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
   try
   {
     MathInterpreter interpreter{argv[1]};
-    cout << "result: " << interpreter.interpret();
+    cout << "result: " << interpreter.interpret() << endl;
   }
   catch (const exception &e)
   {

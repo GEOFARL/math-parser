@@ -13,11 +13,19 @@ double Parser::parse()
 
 /*
 Expression
-    = Primary
+    = Primary ("+" Primary)*
 */
 double Parser::handleExpression()
 {
-  return handlePrimary();
+  double left = handlePrimary();
+
+  while (lookahead.type == Tokenization::TokenType::ADDITION)
+  {
+    eat(Tokenization::TokenType::ADDITION);
+    double right = handlePrimary();
+    left += right;
+  }
+  return left;
 }
 
 /*
