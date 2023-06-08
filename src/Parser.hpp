@@ -18,6 +18,7 @@ public:
 
 private:
   double handleBinaryExpression(std::function<double()>, std::function<double()>, Tokenization::TokenType, Tokenization::TokenType);
+  double handleParenthesizedExpression();
   double handleExpression();
   double handleTerm();
   double handleFactor();

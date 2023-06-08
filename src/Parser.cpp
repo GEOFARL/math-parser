@@ -104,8 +104,25 @@ Primary
 */
 double Parser::handlePrimary()
 {
+  if (lookahead.type == Tokenization::TokenType::PARENTHESIS_LEFT)
+  {
+    return handleParenthesizedExpression();
+  }
   Tokenization::Token token = eat(Tokenization::TokenType::NUMBER);
   return std::stod(token.value);
+}
+
+/*
+ParenthesizedExpression
+    = "(" Expression ")"
+*/
+double Parser::handleParenthesizedExpression()
+{
+  eat(Tokenization::TokenType::PARENTHESIS_LEFT);
+  double expression = handleExpression();
+  eat(Tokenization::TokenType::PARENTHESIS_RIGHT);
+
+  return expression;
 }
 
 Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
