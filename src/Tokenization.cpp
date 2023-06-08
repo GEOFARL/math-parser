@@ -19,8 +19,16 @@ namespace Tokenization
   {
   }
 
+  bool Tokenizer::hasMoreTokens()
+  {
+    return cursor < input.length();
+  }
+
   Token Tokenizer::getNextToken()
   {
-    // check if there are any tokens left
+    if (!hasMoreTokens())
+    {
+      return Token(TokenType::EMPTY, "");
+    }
   }
 }
