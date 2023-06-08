@@ -30,5 +30,11 @@ namespace Tokenization
     {
       return Token(TokenType::EMPTY, "");
     }
+
+    std::string inputSlice = input.substr(cursor);
+    for (const auto &spec : TokenSpec)
+    {
+      // need to match a regex to a next token
+    }
   }
 }
