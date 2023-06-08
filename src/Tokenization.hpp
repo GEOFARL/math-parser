@@ -31,5 +31,12 @@ namespace Tokenization
 
   class Tokenizer
   {
+    std::string input;
+    std::size_t cursor;
+
+  public:
+    Tokenizer(const std::string &);
+
+    Token getNextToken();
   };
 }
