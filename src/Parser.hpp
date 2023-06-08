@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Tokenization.hpp"
+#include "Exceptions.hpp"
 
 class Parser
 {
