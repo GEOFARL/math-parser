@@ -62,7 +62,6 @@ namespace Tokenization
       return Token(type, tokenValue);
     }
 
-    // Add custom error for this
-    throw std::runtime_error("Unexpected token: \"" + std::string(1, inputSlice[0]) + "\"");
+    throw UnexpectedTokenException(std::string("Unexpected token: \"" + std::string(1, inputSlice[0]) + "\""));
   }
 }
