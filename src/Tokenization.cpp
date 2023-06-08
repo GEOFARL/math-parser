@@ -13,4 +13,14 @@ namespace Tokenization
       {std::regex("^\\^"), TokenType::EXPONENTIATION},
       {std::regex("^\\("), TokenType::PARENTHESIS_LEFT},
       {std::regex("^\\)"), TokenType::PARENTHESIS_RIGHT}};
+
+  Tokenizer::Tokenizer(const std::string &input)
+      : input{input}, cursor{0}
+  {
+  }
+
+  Token Tokenizer::getNextToken()
+  {
+    // check if there are any tokens left
+  }
 }
