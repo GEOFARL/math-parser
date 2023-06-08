@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <math.h>
 #include "Tokenization.hpp"
 #include "Exceptions.hpp"
 
@@ -17,8 +18,9 @@ public:
 
 private:
   double handleExpression();
-  double handlePrimary();
   double handleTerm();
+  double handleFactor();
+  double handlePrimary();
 
   Tokenization::Token eat(Tokenization::TokenType);
 };

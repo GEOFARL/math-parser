@@ -39,25 +39,43 @@ double Parser::handleExpression()
 
 /*
 Term
-    = Primary(("*" / "/") Primary)*
+    = Factor(("*" / "/") Factor)*
 */
 double Parser::handleTerm()
 {
-  double left = handlePrimary();
+  double left = handleFactor();
   while (lookahead.type == Tokenization::TokenType::MULTIPLICATION || lookahead.type == Tokenization::TokenType::DIVISION)
   {
     if (lookahead.type == Tokenization::TokenType::MULTIPLICATION)
     {
       eat(Tokenization::TokenType::MULTIPLICATION);
-      double right = handlePrimary();
+      double right = handleFactor();
       left *= right;
     }
     else
     {
       eat(Tokenization::TokenType::DIVISION);
-      double right = handlePrimary();
+      double right = handleFactor();
       left /= right;
     }
+  }
+
+  return left;
+}
+
+/*
+Factor
+    = Primary ("^" Factor)*
+*/
+double Parser::handleFactor()
+{
+  double left = handlePrimary();
+
+  while (lookahead.type == Tokenization::TokenType::EXPONENTIATION)
+  {
+    eat(Tokenization::TokenType::EXPONENTIATION);
+    double right = handleFactor();
+    left = pow(left, right);
   }
 
   return left;
