@@ -19,3 +19,5 @@
 [cpp reference on pair](https://en.cppreference.com/w/cpp/utility/pair)
 
 [video explaining CFG and PEG in detail](https://www.youtube.com/watch?v=lJcK9-0daBY)
+
+[cpp reference on function wrappers](https://en.cppreference.com/w/cpp/utility/functional/function)

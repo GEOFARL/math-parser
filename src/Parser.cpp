@@ -11,30 +11,61 @@ double Parser::parse()
   return handleExpression();
 }
 
+double Parser::handleBinaryExpression(std::function<double()> leftRule, std::function<double()> rightRule, Tokenization::TokenType operatorType1, Tokenization::TokenType operatorType2)
+{
+  double left = leftRule();
+
+  while (lookahead.type == operatorType1 || lookahead.type == operatorType2)
+  {
+    Tokenization::TokenType operatorType = eat(lookahead.type).type;
+    switch (operatorType)
+    {
+    case Tokenization::TokenType::ADDITION:
+    {
+      left += rightRule();
+      break;
+    }
+    case Tokenization::TokenType::SUBTRACTION:
+    {
+      left -= rightRule();
+      break;
+    }
+    case Tokenization::TokenType::MULTIPLICATION:
+    {
+      left *= rightRule();
+      break;
+    }
+    case Tokenization::TokenType::DIVISION:
+    {
+      left /= rightRule();
+      break;
+    }
+    case Tokenization::TokenType::EXPONENTIATION:
+    {
+      left = pow(left, rightRule());
+      break;
+    }
+    default:
+      break;
+    }
+  }
+
+  return left;
+}
+
 /*
 Expression
     = Term (("+" / "-") Term)*
 */
 double Parser::handleExpression()
 {
-  double left = handleTerm();
-
-  while (lookahead.type == Tokenization::TokenType::ADDITION || lookahead.type == Tokenization::TokenType::SUBTRACTION)
-  {
-    if (lookahead.type == Tokenization::TokenType::ADDITION)
-    {
-      eat(Tokenization::TokenType::ADDITION);
-      double right = handleTerm();
-      left += right;
-    }
-    else
-    {
-      eat(Tokenization::TokenType::SUBTRACTION);
-      double right = handleTerm();
-      left -= right;
-    }
-  }
-  return left;
+  return handleBinaryExpression(
+      [&]()
+      { return handleTerm(); },
+      [&]()
+      { return handleTerm(); },
+      Tokenization::TokenType::ADDITION,
+      Tokenization::TokenType::SUBTRACTION);
 }
 
 /*
@@ -43,24 +74,13 @@ Term
 */
 double Parser::handleTerm()
 {
-  double left = handleFactor();
-  while (lookahead.type == Tokenization::TokenType::MULTIPLICATION || lookahead.type == Tokenization::TokenType::DIVISION)
-  {
-    if (lookahead.type == Tokenization::TokenType::MULTIPLICATION)
-    {
-      eat(Tokenization::TokenType::MULTIPLICATION);
-      double right = handleFactor();
-      left *= right;
-    }
-    else
-    {
-      eat(Tokenization::TokenType::DIVISION);
-      double right = handleFactor();
-      left /= right;
-    }
-  }
-
-  return left;
+  return handleBinaryExpression(
+      [&]()
+      { return handleFactor(); },
+      [&]()
+      { return handleFactor(); },
+      Tokenization::TokenType::MULTIPLICATION,
+      Tokenization::TokenType::DIVISION);
 }
 
 /*
@@ -69,16 +89,13 @@ Factor
 */
 double Parser::handleFactor()
 {
-  double left = handlePrimary();
-
-  while (lookahead.type == Tokenization::TokenType::EXPONENTIATION)
-  {
-    eat(Tokenization::TokenType::EXPONENTIATION);
-    double right = handleFactor();
-    left = pow(left, right);
-  }
-
-  return left;
+  return handleBinaryExpression(
+      [&]()
+      { return handlePrimary(); },
+      [&]()
+      { return handleFactor(); },
+      Tokenization::TokenType::EXPONENTIATION,
+      Tokenization::TokenType::EXPONENTIATION);
 }
 
 /*
