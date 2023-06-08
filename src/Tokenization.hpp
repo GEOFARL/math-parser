@@ -43,5 +43,6 @@ namespace Tokenization
 
   private:
     bool hasMoreTokens();
+    std::string match(const std::regex &, const std::string &);
   };
 }

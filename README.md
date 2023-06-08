@@ -12,6 +12,8 @@
 
 [cpp reference on regex](https://en.cppreference.com/w/cpp/regex)
 
+[cpp reference on regex_search](https://en.cppreference.com/w/cpp/regex/regex_search)
+
 [cpp reference on enums](https://en.cppreference.com/w/cpp/language/enum)
 
 [cpp reference on pair](https://en.cppreference.com/w/cpp/utility/pair)
