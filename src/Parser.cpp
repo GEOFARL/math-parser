@@ -100,13 +100,20 @@ double Parser::handleFactor()
 
 /*
 Primary
-    = NUMBER
+    = ParenthesizedExpression
+    / UnaryExpression
+    / NUMBER
 */
 double Parser::handlePrimary()
 {
   if (lookahead.type == Tokenization::TokenType::PARENTHESIS_LEFT)
   {
     return handleParenthesizedExpression();
+  }
+
+  if (lookahead.type == Tokenization::TokenType::SUBTRACTION)
+  {
+    return handleUnaryExpression();
   }
   Tokenization::Token token = eat(Tokenization::TokenType::NUMBER);
   return std::stod(token.value);
@@ -123,6 +130,16 @@ double Parser::handleParenthesizedExpression()
   eat(Tokenization::TokenType::PARENTHESIS_RIGHT);
 
   return expression;
+}
+
+/*
+UnaryExpression
+    = "-" Factor
+*/
+double Parser::handleUnaryExpression()
+{
+  eat(Tokenization::TokenType::SUBTRACTION);
+  return -handleFactor();
 }
 
 Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
