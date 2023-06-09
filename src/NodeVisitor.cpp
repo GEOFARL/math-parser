@@ -53,3 +53,9 @@ double NodeVisitor::visitBinaryExpression(ASTNode *node)
     throw InvalidOperatorException("Invalid operation: " + node->value);
   }
 }
+
+double NodeVisitor::visitUnaryExpression(ASTNode *node)
+{
+  double value = visit(node->left);
+  return -value;
+}
