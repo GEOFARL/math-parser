@@ -50,7 +50,6 @@ double NodeVisitor::visitBinaryExpression(ASTNode *node)
   }
   else
   {
-    // add custom exception
-    throw std::runtime_error("Invalid operation: " + node->value);
+    throw InvalidOperatorException("Invalid operation: " + node->value);
   }
 }
