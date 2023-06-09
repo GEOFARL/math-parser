@@ -12,7 +12,8 @@ namespace Tokenization
       {std::regex("^\\/"), TokenType::DIVISION},
       {std::regex("^\\^"), TokenType::EXPONENTIATION},
       {std::regex("^\\("), TokenType::PARENTHESIS_LEFT},
-      {std::regex("^\\)"), TokenType::PARENTHESIS_RIGHT}};
+      {std::regex("^\\)"), TokenType::PARENTHESIS_RIGHT},
+      {std::regex("^\\="), TokenType::ASSIGNMENT}};
 
   Tokenizer::Tokenizer(const std::string &input)
       : input{input}, cursor{0}
@@ -85,6 +86,8 @@ namespace Tokenization
       return "EXPONENTIATION";
     case TokenType::PARENTHESIS_LEFT:
       return "PARENTHESIS_LEFT";
+    case TokenType::ASSIGNMENT:
+      return "ASSIGNMENT";
     case TokenType::PARENTHESIS_RIGHT:
       return "PARENTHESIS_RIGHT";
     case TokenType::EMPTY:

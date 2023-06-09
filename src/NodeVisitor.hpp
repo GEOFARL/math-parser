@@ -14,4 +14,7 @@ private:
   double visitBinaryExpression(ASTNode *);
   double visitUnaryExpression(ASTNode *);
   double visitVariable(ASTNode *);
+  double visitAssignment(ASTNode *);
+
+  void addVariable(const std::string &, double);
 };

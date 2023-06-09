@@ -23,6 +23,10 @@ double NodeVisitor::visit(ASTNode *node)
   {
     return visitVariable(node);
   }
+  else if (node->type == Tokenization::TokenType::ASSIGNMENT)
+  {
+    return visitAssignment(node);
+  }
 
   return 0;
 }
@@ -78,4 +82,17 @@ double NodeVisitor::visitVariable(ASTNode *node)
     throw std::runtime_error("Undefined variable: " + variableName);
   }
   return variables->at(variableName);
+}
+
+double NodeVisitor::visitAssignment(ASTNode *node)
+{
+  std::string variableName = node->value;
+  double value = visit(node->right);
+  addVariable(variableName, value);
+  return value;
+}
+
+void NodeVisitor::addVariable(const std::string &name, double value)
+{
+  (*variables)[name] = value;
 }

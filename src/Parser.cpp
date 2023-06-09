@@ -1,20 +1,24 @@
 #include "Parser.hpp"
 
-Parser::Parser(const std::string &input, std::unordered_map<std::string, double> *variables)
-    : input{input}, tokenizer{input}, top{nullptr}, variables{variables}
+Parser::Parser(const std::string &input)
+    : input{input}, tokenizer{input}
 {
   lookahead = tokenizer.getNextToken();
 }
 
 ASTNode *Parser::parse()
 {
-  top = handleExpression();
-  return top;
+  ASTNode *node = handleExpression();
+  topNodes.push_back(node);
+  return node;
 }
 
 Parser::~Parser()
 {
-  delete top;
+  for (auto node : topNodes)
+  {
+    delete node;
+  }
 }
 
 ASTNode *Parser::handleBinaryExpression(std::function<ASTNode *()> leftRule, std::function<ASTNode *()> rightRule, Tokenization::TokenType operatorType1, Tokenization::TokenType operatorType2)
@@ -167,8 +171,26 @@ Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
 ASTNode *Parser::handleVariable()
 {
   std::string variableName = eat(Tokenization::TokenType::IDENTIFIER).value;
-  ASTNode *variableNode = new ASTNode();
-  variableNode->type = Tokenization::TokenType::VARIABLE;
-  variableNode->value = variableName;
-  return variableNode;
+
+  if (lookahead.type == Tokenization::TokenType::ASSIGNMENT)
+  {
+    ASTNode *assignmentNode = new ASTNode();
+    eat(Tokenization::TokenType::ASSIGNMENT);
+    assignmentNode->type = Tokenization::TokenType::ASSIGNMENT;
+    assignmentNode->value = variableName;
+    assignmentNode->right = handleExpression();
+    return assignmentNode;
+  }
+  else
+  {
+    ASTNode *variableNode = new ASTNode();
+    variableNode->type = Tokenization::TokenType::VARIABLE;
+    variableNode->value = variableName;
+    return variableNode;
+  }
+}
+
+bool Parser::leftSomething()
+{
+  return lookahead.type != Tokenization::TokenType::EMPTY;
 }

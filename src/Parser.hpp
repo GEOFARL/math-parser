@@ -31,15 +31,15 @@ class Parser
   std::string input;
   Tokenization::Tokenizer tokenizer;
   Tokenization::Token lookahead;
-  ASTNode *top;
-  std::unordered_map<std::string, double> *variables;
+  std::vector<ASTNode *> topNodes;
 
 public:
-  Parser(const std::string &, std::unordered_map<std::string, double> *);
+  Parser(const std::string &);
 
   ~Parser();
 
   ASTNode *parse();
+  bool leftSomething();
 
 private:
   ASTNode *handleBinaryExpression(std::function<ASTNode *()>, std::function<ASTNode *()>, Tokenization::TokenType, Tokenization::TokenType);
