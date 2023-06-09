@@ -30,3 +30,12 @@ public:
   InvalidOperatorException(const std::string &);
   const char *what() const noexcept override;
 };
+
+class UndefinedVariableException : public std::exception
+{
+  std::string message;
+
+public:
+  UndefinedVariableException(const std::string &);
+  const char *what() const noexcept override;
+};
