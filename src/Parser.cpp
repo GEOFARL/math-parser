@@ -1,7 +1,7 @@
 #include "Parser.hpp"
 
-Parser::Parser(const std::string &input)
-    : input{input}, tokenizer{input}, top{nullptr}
+Parser::Parser(const std::string &input, std::unordered_map<std::string, double> *variables)
+    : input{input}, tokenizer{input}, top{nullptr}, variables{variables}
 {
   lookahead = tokenizer.getNextToken();
 }
@@ -86,6 +86,7 @@ ASTNode *Parser::handleFactor()
 Primary
     = ParenthesizedExpression
     / UnaryExpression
+    / VARIABLE
     / NUMBER
 */
 ASTNode *Parser::handlePrimary()
@@ -99,6 +100,12 @@ ASTNode *Parser::handlePrimary()
   {
     return handleUnaryExpression();
   }
+
+  if (lookahead.type == Tokenization::TokenType::IDENTIFIER)
+  {
+    return handleVariable();
+  }
+
   Tokenization::Token token = eat(Tokenization::TokenType::NUMBER);
 
   ASTNode *numberNode = new ASTNode();
@@ -155,4 +162,13 @@ Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)
   lookahead = tokenizer.getNextToken();
 
   return token;
+}
+
+ASTNode *Parser::handleVariable()
+{
+  std::string variableName = eat(Tokenization::TokenType::IDENTIFIER).value;
+  ASTNode *variableNode = new ASTNode();
+  variableNode->type = Tokenization::TokenType::VARIABLE;
+  variableNode->value = variableName;
+  return variableNode;
 }

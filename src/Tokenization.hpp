@@ -23,7 +23,8 @@ namespace Tokenization
     PARENTHESIS_LEFT,
     PARENTHESIS_RIGHT,
     BINARY_EXPRESSION,
-    UNARY_EXPRESSION
+    UNARY_EXPRESSION,
+    VARIABLE
   };
 
   struct Token
