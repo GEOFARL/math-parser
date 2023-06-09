@@ -1,14 +1,20 @@
 #include "Parser.hpp"
 
 Parser::Parser(const std::string &input)
-    : input{input}, tokenizer{input}
+    : input{input}, tokenizer{input}, top{nullptr}
 {
   lookahead = tokenizer.getNextToken();
 }
 
 ASTNode *Parser::parse()
 {
-  return handleExpression();
+  top = handleExpression();
+  return top;
+}
+
+Parser::~Parser()
+{
+  delete top;
 }
 
 ASTNode *Parser::handleBinaryExpression(std::function<ASTNode *()> leftRule, std::function<ASTNode *()> rightRule, Tokenization::TokenType operatorType1, Tokenization::TokenType operatorType2)
@@ -26,37 +32,6 @@ ASTNode *Parser::handleBinaryExpression(std::function<ASTNode *()> leftRule, std
     binaryExpressionNode->right = right;
 
     left = binaryExpressionNode;
-
-    // switch (operatorType)
-    // {
-    // case Tokenization::TokenType::ADDITION:
-    // {
-    //   left += rightRule();
-    //   break;
-    // }
-    // case Tokenization::TokenType::SUBTRACTION:
-    // {
-    //   left -= rightRule();
-    //   break;
-    // }
-    // case Tokenization::TokenType::MULTIPLICATION:
-    // {
-    //   left *= rightRule();
-    //   break;
-    // }
-    // case Tokenization::TokenType::DIVISION:
-    // {
-    //   left /= rightRule();
-    //   break;
-    // }
-    // case Tokenization::TokenType::EXPONENTIATION:
-    // {
-    //   left = pow(left, rightRule());
-    //   break;
-    // }
-    // default:
-    //   break;
-    // }
   }
 
   return left;

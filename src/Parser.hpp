@@ -11,6 +11,18 @@ struct ASTNode
   std::string value;
   ASTNode *left;
   ASTNode *right;
+
+  ~ASTNode()
+  {
+    if (left != nullptr)
+    {
+      delete left;
+    }
+    if (right != nullptr)
+    {
+      delete right;
+    }
+  }
 };
 
 class Parser
@@ -18,9 +30,12 @@ class Parser
   std::string input;
   Tokenization::Tokenizer tokenizer;
   Tokenization::Token lookahead;
+  ASTNode *top;
 
 public:
   Parser(const std::string &);
+
+  ~Parser();
 
   ASTNode *parse();
 

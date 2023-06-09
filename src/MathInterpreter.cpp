@@ -9,5 +9,7 @@ double MathInterpreter::interpret()
 {
   std::string content = reader.readFile();
   Parser parser{content};
-  return parser.parse();
+  NodeVisitor visitor;
+  ASTNode *ast = parser.parse();
+  return visitor.visit(ast);
 }

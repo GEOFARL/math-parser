@@ -7,6 +7,7 @@
 
 #include "FileReader.hpp"
 #include "Parser.hpp"
+#include "NodeVisitor.hpp"
 
 namespace fs = std::filesystem;
 
