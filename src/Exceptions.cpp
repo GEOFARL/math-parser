@@ -26,3 +26,12 @@ const char *InvalidOperatorException::what() const noexcept
 {
   return message.c_str();
 }
+
+UndefinedVariableException::UndefinedVariableException(const std::string &message) : message{message}
+{
+}
+
+const char *UndefinedVariableException::what() const noexcept
+{
+  return message.c_str();
+}

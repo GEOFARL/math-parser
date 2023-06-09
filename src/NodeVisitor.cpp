@@ -78,8 +78,7 @@ double NodeVisitor::visitVariable(ASTNode *node)
   const std::string &variableName = node->value;
   if (variables->count(variableName) == 0)
   {
-    // add custom exception
-    throw std::runtime_error("Undefined variable: " + variableName);
+    throw UndefinedVariableException("Undefined variable: " + variableName);
   }
   return variables->at(variableName);
 }
