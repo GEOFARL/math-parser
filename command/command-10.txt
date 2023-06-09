@@ -1,2 +1,3 @@
 abcd = 5
-abcd + c
+maxik = 70
+abcd + kvasik + maxik
