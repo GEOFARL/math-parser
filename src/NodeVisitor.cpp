@@ -1,5 +1,10 @@
 #include "NodeVisitor.hpp"
 
+NodeVisitor::NodeVisitor(std::unordered_map<std::string, double> *variables)
+    : variables{variables}
+{
+}
+
 double NodeVisitor::visit(ASTNode *node)
 {
   if (node->type == Tokenization::TokenType::NUMBER)
@@ -13,6 +18,10 @@ double NodeVisitor::visit(ASTNode *node)
   else if (node->type == Tokenization::TokenType::UNARY_EXPRESSION)
   {
     return visitUnaryExpression(node);
+  }
+  else if (node->type == Tokenization::TokenType::VARIABLE)
+  {
+    return visitVariable(node);
   }
 
   return 0;
@@ -58,4 +67,15 @@ double NodeVisitor::visitUnaryExpression(ASTNode *node)
 {
   double value = visit(node->left);
   return -value;
+}
+
+double NodeVisitor::visitVariable(ASTNode *node)
+{
+  const std::string &variableName = node->value;
+  if (variables->count(variableName) == 0)
+  {
+    // add custom exception
+    throw std::runtime_error("Undefined variable: " + variableName);
+  }
+  return variables->at(variableName);
 }
