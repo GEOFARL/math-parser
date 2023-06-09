@@ -17,3 +17,8 @@ double NodeVisitor::visit(ASTNode *node)
 
   return 0;
 }
+
+double NodeVisitor::visitNumber(ASTNode *node)
+{
+  return std::stod(node->value);
+}
