@@ -5,6 +5,14 @@
 #include "Tokenization.hpp"
 #include "Exceptions.hpp"
 
+struct ASTNode
+{
+  Tokenization::TokenType type;
+  std::string value;
+  ASTNode *left;
+  ASTNode *right;
+};
+
 class Parser
 {
   std::string input;
