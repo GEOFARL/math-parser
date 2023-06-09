@@ -128,7 +128,7 @@ ASTNode *Parser::handlePrimary()
 
   ASTNode *numberNode = new ASTNode();
   numberNode->type = Tokenization::TokenType::NUMBER;
-  numberNode->value = std::stod(token.value);
+  numberNode->value = token.value;
 
   return numberNode;
 }
