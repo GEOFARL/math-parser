@@ -22,3 +22,35 @@ double NodeVisitor::visitNumber(ASTNode *node)
 {
   return std::stod(node->value);
 }
+
+double NodeVisitor::visitBinaryExpression(ASTNode *node)
+{
+  double left = visit(node->left);
+  double right = visit(node->right);
+
+  if (node->value == "+")
+  {
+    return left + right;
+  }
+  else if (node->value == "-")
+  {
+    return left - right;
+  }
+  else if (node->value == "*")
+  {
+    return left * right;
+  }
+  else if (node->value == "/")
+  {
+    return left / right;
+  }
+  else if (node->value == "^")
+  {
+    return pow(left, right);
+  }
+  else
+  {
+    // add custom exception
+    throw std::runtime_error("Invalid operation: " + node->value);
+  }
+}
