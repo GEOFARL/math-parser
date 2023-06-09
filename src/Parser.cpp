@@ -6,48 +6,57 @@ Parser::Parser(const std::string &input)
   lookahead = tokenizer.getNextToken();
 }
 
-double Parser::parse()
+ASTNode *Parser::parse()
 {
   return handleExpression();
 }
 
-double Parser::handleBinaryExpression(std::function<double()> leftRule, std::function<double()> rightRule, Tokenization::TokenType operatorType1, Tokenization::TokenType operatorType2)
+ASTNode *Parser::handleBinaryExpression(std::function<ASTNode *()> leftRule, std::function<ASTNode *()> rightRule, Tokenization::TokenType operatorType1, Tokenization::TokenType operatorType2)
 {
-  double left = leftRule();
+  ASTNode *left = leftRule();
 
   while (lookahead.type == operatorType1 || lookahead.type == operatorType2)
   {
-    Tokenization::TokenType operatorType = eat(lookahead.type).type;
-    switch (operatorType)
-    {
-    case Tokenization::TokenType::ADDITION:
-    {
-      left += rightRule();
-      break;
-    }
-    case Tokenization::TokenType::SUBTRACTION:
-    {
-      left -= rightRule();
-      break;
-    }
-    case Tokenization::TokenType::MULTIPLICATION:
-    {
-      left *= rightRule();
-      break;
-    }
-    case Tokenization::TokenType::DIVISION:
-    {
-      left /= rightRule();
-      break;
-    }
-    case Tokenization::TokenType::EXPONENTIATION:
-    {
-      left = pow(left, rightRule());
-      break;
-    }
-    default:
-      break;
-    }
+    std::string operatorValue = eat(lookahead.type).value;
+    ASTNode *right = rightRule();
+    ASTNode *binaryExpressionNode = new ASTNode();
+    binaryExpressionNode->type = Tokenization::TokenType::BINARY_EXPRESSION;
+    binaryExpressionNode->value = operatorValue;
+    binaryExpressionNode->left = left;
+    binaryExpressionNode->right = right;
+
+    left = binaryExpressionNode;
+
+    // switch (operatorType)
+    // {
+    // case Tokenization::TokenType::ADDITION:
+    // {
+    //   left += rightRule();
+    //   break;
+    // }
+    // case Tokenization::TokenType::SUBTRACTION:
+    // {
+    //   left -= rightRule();
+    //   break;
+    // }
+    // case Tokenization::TokenType::MULTIPLICATION:
+    // {
+    //   left *= rightRule();
+    //   break;
+    // }
+    // case Tokenization::TokenType::DIVISION:
+    // {
+    //   left /= rightRule();
+    //   break;
+    // }
+    // case Tokenization::TokenType::EXPONENTIATION:
+    // {
+    //   left = pow(left, rightRule());
+    //   break;
+    // }
+    // default:
+    //   break;
+    // }
   }
 
   return left;
@@ -57,7 +66,7 @@ double Parser::handleBinaryExpression(std::function<double()> leftRule, std::fun
 Expression
     = Term (("+" / "-") Term)*
 */
-double Parser::handleExpression()
+ASTNode *Parser::handleExpression()
 {
   return handleBinaryExpression(
       [&]()
@@ -72,7 +81,7 @@ double Parser::handleExpression()
 Term
     = Factor(("*" / "/") Factor)*
 */
-double Parser::handleTerm()
+ASTNode *Parser::handleTerm()
 {
   return handleBinaryExpression(
       [&]()
@@ -87,7 +96,7 @@ double Parser::handleTerm()
 Factor
     = Primary ("^" Factor)*
 */
-double Parser::handleFactor()
+ASTNode *Parser::handleFactor()
 {
   return handleBinaryExpression(
       [&]()
@@ -104,7 +113,7 @@ Primary
     / UnaryExpression
     / NUMBER
 */
-double Parser::handlePrimary()
+ASTNode *Parser::handlePrimary()
 {
   if (lookahead.type == Tokenization::TokenType::PARENTHESIS_LEFT)
   {
@@ -116,17 +125,22 @@ double Parser::handlePrimary()
     return handleUnaryExpression();
   }
   Tokenization::Token token = eat(Tokenization::TokenType::NUMBER);
-  return std::stod(token.value);
+
+  ASTNode *numberNode = new ASTNode();
+  numberNode->type = Tokenization::TokenType::NUMBER;
+  numberNode->value = std::stod(token.value);
+
+  return numberNode;
 }
 
 /*
 ParenthesizedExpression
     = "(" Expression ")"
 */
-double Parser::handleParenthesizedExpression()
+ASTNode *Parser::handleParenthesizedExpression()
 {
   eat(Tokenization::TokenType::PARENTHESIS_LEFT);
-  double expression = handleExpression();
+  ASTNode *expression = handleExpression();
   eat(Tokenization::TokenType::PARENTHESIS_RIGHT);
 
   return expression;
@@ -136,10 +150,15 @@ double Parser::handleParenthesizedExpression()
 UnaryExpression
     = "-" Factor
 */
-double Parser::handleUnaryExpression()
+ASTNode *Parser::handleUnaryExpression()
 {
   eat(Tokenization::TokenType::SUBTRACTION);
-  return -handleFactor();
+  ASTNode *factor = handleFactor();
+  ASTNode *unaryExpressionNode = new ASTNode();
+  unaryExpressionNode->type = Tokenization::TokenType::UNARY_EXPRESSION;
+  unaryExpressionNode->value = "-";
+  unaryExpressionNode->left = factor;
+  return unaryExpressionNode;
 }
 
 Tokenization::Token Parser::eat(Tokenization::TokenType tokenType)

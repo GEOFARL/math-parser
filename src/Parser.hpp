@@ -5,6 +5,14 @@
 #include "Tokenization.hpp"
 #include "Exceptions.hpp"
 
+struct ASTNode
+{
+  Tokenization::TokenType type;
+  std::string value;
+  ASTNode *left;
+  ASTNode *right;
+};
+
 class Parser
 {
   std::string input;
@@ -14,16 +22,16 @@ class Parser
 public:
   Parser(const std::string &);
 
-  double parse();
+  ASTNode *parse();
 
 private:
-  double handleBinaryExpression(std::function<double()>, std::function<double()>, Tokenization::TokenType, Tokenization::TokenType);
-  double handleParenthesizedExpression();
-  double handleUnaryExpression();
-  double handleExpression();
-  double handleTerm();
-  double handleFactor();
-  double handlePrimary();
+  ASTNode *handleBinaryExpression(std::function<ASTNode *()>, std::function<ASTNode *()>, Tokenization::TokenType, Tokenization::TokenType);
+  ASTNode *handleParenthesizedExpression();
+  ASTNode *handleUnaryExpression();
+  ASTNode *handleExpression();
+  ASTNode *handleTerm();
+  ASTNode *handleFactor();
+  ASTNode *handlePrimary();
 
   Tokenization::Token eat(Tokenization::TokenType);
 };
