@@ -21,3 +21,12 @@ public:
   UnexpectedTokenException(const std::string &);
   const char *what() const noexcept override;
 };
+
+class InvalidOperatorException : public std::exception
+{
+  std::string message;
+
+public:
+  InvalidOperatorException(const std::string &);
+  const char *what() const noexcept override;
+};

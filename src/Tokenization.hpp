@@ -21,7 +21,9 @@ namespace Tokenization
     DIVISION,
     EXPONENTIATION,
     PARENTHESIS_LEFT,
-    PARENTHESIS_RIGHT
+    PARENTHESIS_RIGHT,
+    BINARY_EXPRESSION,
+    UNARY_EXPRESSION
   };
 
   struct Token
@@ -30,6 +32,8 @@ namespace Tokenization
     std::string value;
 
     Token(TokenType type, const std::string &value) : type{type}, value{value} {}
+
+    Token() : type(TokenType::EMPTY), value("") {}
 
     // for testing purposes
     friend std::ostream &operator<<(std::ostream &os, const Token &token)
@@ -50,6 +54,8 @@ namespace Tokenization
     Tokenizer(const std::string &);
 
     Token getNextToken();
+
+    static std::string getTokenTypeString(TokenType tokenType);
 
   private:
     bool hasMoreTokens();

@@ -17,3 +17,12 @@ const char *UnexpectedTokenException::what() const noexcept
 {
   return message.c_str();
 }
+
+InvalidOperatorException::InvalidOperatorException(const std::string &message) : message{message}
+{
+}
+
+const char *InvalidOperatorException::what() const noexcept
+{
+  return message.c_str();
+}
